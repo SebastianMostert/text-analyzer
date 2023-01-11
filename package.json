@@ -1,0 +1,26 @@
+{
+  "name": "ai-text-analyzer",
+  "version": "1.0.0",
+  "description": "A package to analyze text for profanity and many other things",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/That-Half-Dead-Skeleton/text-analyzer.git"
+  },
+  "keywords": [
+    "Ai",
+    "Text-Analysis"
+  ],
+  "author": "Sebastian Mostert",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/That-Half-Dead-Skeleton/text-analyzer/issues"
+  },
+  "homepage": "https://github.com/That-Half-Dead-Skeleton/text-analyzer#readme",
+  "dependencies": {
+    "googleapis": "^110.0.0"
+  }
+}

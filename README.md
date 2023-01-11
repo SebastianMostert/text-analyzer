@@ -3,7 +3,7 @@
 
 This package allows you to analyze text for toxicity, profanity and many other things!
 ## Usage/Examples
-### Variables
+### Options
 #### Attribute Thresholds
 | Name                	| Type   	| Description                                                           	| Available Languages                                                             	|
 |---------------------	|--------	|-----------------------------------------------------------------------	|---------------------------------------------------------------------------------	|

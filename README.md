@@ -13,15 +13,15 @@ This package allows you to analyze text for toxicity, profanity and many other t
 | INSULT              	| Number 	| Indicates whether the text was considered an Insult                   	| ar, zh, cs, nl, en, fr, de, hi, hi-Latn,<br>id, it, ja, ko, pl, pt, ru, es, sv  	|
 | PROFANITY           	| Number 	| Indicates whether the text was considered profane                     	| ar, zh, cs, nl, en, fr, de, hi, hi-Latn,<br>id, it, ja, ko, pl, pt, ru, es, sv  	|
 | THREAT              	| Number 	| Indicates whether the text was considered a threat                    	| ar, zh, cs, nl, en, fr, de, hi, hi-Latn,<br>id, it, ja, ko, pl, pt, ru, es, sv  	|
-| SEXUALLY_EXPLICIT   	| Number 	| Indicates whether the text was considered as sexually explicit        	| Experimental                                                                    	|
-| FLIRTATION          	| Number 	| Indicates whether the text was considered flirtatious                 	| Experimental                                                                    	|
-| SPAM                	| Number 	| Indicates whether the text was considered spam                        	| en                                                                              	|
-| ATTACK_ON_AUTHOR    	| Number 	| Indicates whether the text was considered as an attack on the author  	| en                                                                              	|
-| ATTACK_ON_COMMENTER 	| Number 	| Indicates whether the text was considered as an attack on a commenter 	| en                                                                              	|
-| INCOHERENT          	| Number 	| Indicates whether the text was considered incoherent                  	| en                                                                              	|
-| INFLAMMATORY        	| Number 	| Indicates whether the text was considered inflammatory                	| en                                                                              	|
-| OBSCENE             	| Number 	| Indicates whether the text was considered obscene                     	| en                                                                              	|
-| UNSUBSTANTIAL       	| Number 	| Indicates whether the text was considered unsubstantial               	| en                                                                              	|
+| SEXUALLY_EXPLICIT   	| Number 	| Indicates whether the text was considered as sexually explicit        	| (Experimental)                                                                     	|
+| FLIRTATION          	| Number 	| Indicates whether the text was considered flirtatious                 	| (Experimental)                                                                   	|
+| SPAM                	| Number 	| Indicates whether the text was considered spam                        	| (Experimental) en                                                                              	|
+| ATTACK_ON_AUTHOR    	| Number 	| Indicates whether the text was considered as an attack on the author  	| (Experimental) en                                                                              	|
+| ATTACK_ON_COMMENTER 	| Number 	| Indicates whether the text was considered as an attack on a commenter 	| (Experimental) en                                                                              	|
+| INCOHERENT          	| Number 	| Indicates whether the text was considered incoherent                  	| (Experimental) en                                                                               	|
+| INFLAMMATORY        	| Number 	| Indicates whether the text was considered inflammatory                	| (Experimental) en                                                                               	|
+| OBSCENE             	| Number 	| Indicates whether the text was considered obscene                     	| (Experimental) en                                                                               	|
+| UNSUBSTANTIAL       	| Number 	| Indicates whether the text was considered unsubstantial               	| (Experimental) en                                                                               	|
 
 ### Example
 ```js

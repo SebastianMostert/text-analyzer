@@ -1,6 +1,6 @@
 {
   "name": "toxicity-analyzer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A package to analyze text for profanity and many other things",
   "main": "index.js",
   "scripts": {

@@ -44,4 +44,27 @@
  * @property {Array} languages - The Languages to check
  */
 
+/**
+ * @typedef {object} ImageAnalyzerOptions
+ * @property {string} apiKey - The moderatecontent API key
+ * @property {string} proxyURL - The proxy url of the image you would like to check
+ */
+
+/**
+ * @typedef {object} ImageAnalyzerPredictions
+ * @property {number} teen - How sure the AI is that the image is classified as "teen"
+ * @property {number} everyone - How sure the AI is that the image is classified as "everyone"
+ * @property {number} adult - How sure the AI is that the image is classified as "adult"
+ */
+
+/**
+ * @typedef {object} ImageAnalyzerResponse
+ * @property {string} url_classified - The Url of the image you would like to check
+ * @property {number} rating_index - The rating index
+ * @property {string} rating_letter - The rating letter
+ * @property {ImageAnalyzerPredictions} predictions - The predictions
+ * @property {string} rating_label - The rating label (everypne, teen or adult)
+ * @property {number} error_code - The error code, 0 for no error
+ */
+
 exports.unused = {};

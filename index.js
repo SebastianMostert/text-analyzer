@@ -1,4 +1,5 @@
 // googleapis@48.0.0
+const { default: axios } = require('axios');
 const { google } = require('googleapis');
 const DISCOVERY_URL = 'https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1';
 
@@ -21,7 +22,7 @@ const typedefs = require("./typedefs");
  * @description Analyze some text to find profanity
  * 
  * @example <caption>Checks english text and triggers if the AI is 75% sure</caption>
- * await perspective.analyzeText({
+ * await analyzeText({
 			text: message.content,
 			attributeThresholds: {
 				TOXICITY: 0.75,
@@ -35,7 +36,7 @@ const typedefs = require("./typedefs");
 				ATTACK_ON_COMMENTER: 0.75,
 			},
 			languages: ['en'],
-			apiKey: process.env.PERSPECTIVE_API_KEY
+			apiKey: process.env.API_KEY
 		});
 
  * 
@@ -95,4 +96,44 @@ async function analyzeText(options = {}) {
 	return await res;
 }
 
-module.exports = analyzeText;
+/**
+ * @param {typedefs.ImageAnalyzerOptions} options The options object
+ * 
+ * @throws Thorws an error if one of the parameters was malformed
+ * 
+ * @return {Promise<typedefs.ImageAnalyzerResponse>} res - The result of the analysis
+ * @description Analyze an image and determine its rating
+ * 
+ * @example <caption>Checks an image and return the result</caption>
+ * await analyzeImage({
+		apiKey: process.env.API_KEY
+		proxyURL: 'https://www.exampleImage.com'
+	})
+ */
+async function analyzeImage(options = {}) {
+	const { apiKey, proxyURL } = options;
+	if (!apiKey) throw new Error(
+		`[TOXICITY ANALYZER ERROR] You need to specifiy an API Key! Please visit this form to receive access to the API: https://docs.google.com/forms/d/e/1FAIpQLSdhBBnVVVbXSElby-jhNnEj-Zwpt5toQSCFsJerGfpXW66CuQ/viewform`
+	)
+	if (!proxyURL) throw new Error(
+		`[TOXICITY ANALYZER ERROR] You need to specifiy a valid Image URL!`
+	)
+
+	const requestOptions = {
+		method: 'GET',
+		url: `https://api.moderatecontent.com/moderate/?key=${apiKey}&url=${proxyURL}`,
+	};
+	const res_ = axios.request(requestOptions).then(async function (response) {
+		console.log(response.data)
+		const data = response.data;
+
+		return await data
+	}).catch(function (error) {
+		throw new Error(error);
+	});
+
+	return await res_;
+}
+
+module.exports.analyzeText = analyzeText;
+module.exports.analyzeImage = analyzeImage;

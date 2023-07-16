@@ -153,4 +153,4 @@ Any error that occurs during the image analysis will be caught and logged to the
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.

@@ -1,8 +1,8 @@
 {
   "name": "toxicity-analyzer",
-  "version": "2.0.0",
+  "version": "4.0.0",
   "description": "A package to analyze text for profanity and to detect the rating of an Image using AI",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,12 +20,8 @@
     "image analysis",
     "image analyzer"
   ],
-  "author": {
-    "name": "Sebastian Mostert",
-    "email": "sebastianmostert663@gmail.com",
-    "url": "https://github.com/That-Half-Dead-Skeleton"
-  },
-  "license": "ISC",
+  "author": "Sebastian Mostert <sebastianmostert663@gmail.com> (https://github.com/That-Half-Dead-Skeleton)",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/That-Half-Dead-Skeleton/text-analyzer/issues"
   },
@@ -33,5 +29,9 @@
   "dependencies": {
     "axios": "^1.3.1",
     "googleapis": "^110.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "typescript": "^5.1.6"
   }
 }

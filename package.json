@@ -21,7 +21,7 @@
     "image analyzer"
   ],
   "author": "Sebastian Mostert <sebastianmostert663@gmail.com> (https://github.com/That-Half-Dead-Skeleton)",
-  "license": "MIT",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/That-Half-Dead-Skeleton/text-analyzer/issues"
   },

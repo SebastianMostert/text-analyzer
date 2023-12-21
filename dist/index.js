@@ -1,7 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.analyzeImage = exports.analyzeText = void 0;
-const text_analyzer_1 = require("./api/text-analyzer");
-Object.defineProperty(exports, "analyzeText", { enumerable: true, get: function () { return text_analyzer_1.analyzeText; } });
-const image_analyzer_1 = require("./api/image-analyzer");
-Object.defineProperty(exports, "analyzeImage", { enumerable: true, get: function () { return image_analyzer_1.analyzeImage; } });
+exports.ToxicityAnalyzerError = exports.PerspectiveAnalyzerError = exports.MissingParameterError = exports.LowConfidenceError = exports.LanguageNotSupportedForAttributesError = exports.LanguageNotSupportedError = exports.analyzeImage = exports.PerspectiveClient = void 0;
+const api_1 = require("./api");
+Object.defineProperty(exports, "PerspectiveClient", { enumerable: true, get: function () { return api_1.PerspectiveClient; } });
+Object.defineProperty(exports, "analyzeImage", { enumerable: true, get: function () { return api_1.analyzeImage; } });
+const errors_1 = require("./errors");
+Object.defineProperty(exports, "LanguageNotSupportedError", { enumerable: true, get: function () { return errors_1.LanguageNotSupportedError; } });
+Object.defineProperty(exports, "LanguageNotSupportedForAttributesError", { enumerable: true, get: function () { return errors_1.LanguageNotSupportedForAttributesError; } });
+Object.defineProperty(exports, "LowConfidenceError", { enumerable: true, get: function () { return errors_1.LowConfidenceError; } });
+Object.defineProperty(exports, "MissingParameterError", { enumerable: true, get: function () { return errors_1.MissingParameterError; } });
+Object.defineProperty(exports, "PerspectiveAnalyzerError", { enumerable: true, get: function () { return errors_1.PerspectiveAnalyzerError; } });
+Object.defineProperty(exports, "ToxicityAnalyzerError", { enumerable: true, get: function () { return errors_1.ToxicityAnalyzerError; } });

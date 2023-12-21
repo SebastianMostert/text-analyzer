@@ -1,3 +1,3 @@
-import { analyzeText } from "./api/text-analyzer";
-import { analyzeImage } from "./api/image-analyzer";
-export { analyzeText, analyzeImage };
+import { PerspectiveClient, AnalyzeCommentRequestBody, AnalyzeCommentResponse, AttributeScore, SpanScore, analyzeImage, ImageAnalyzerOptions, ImageAnalyzerPredictions, ImageAnalyzerResponse } from "./api";
+import { LanguageNotSupportedError, LanguageNotSupportedForAttributesError, LowConfidenceError, MissingParameterError, PerspectiveAnalyzerError, ToxicityAnalyzerError } from './errors';
+export { PerspectiveClient, AnalyzeCommentRequestBody, AnalyzeCommentResponse, AttributeScore, SpanScore, analyzeImage, ImageAnalyzerOptions, ImageAnalyzerPredictions, ImageAnalyzerResponse, LanguageNotSupportedError, LanguageNotSupportedForAttributesError, LowConfidenceError, MissingParameterError, PerspectiveAnalyzerError, ToxicityAnalyzerError };

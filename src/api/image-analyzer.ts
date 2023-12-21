@@ -1,18 +1,18 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { MissingParameterError, PerspectiveAnalyzerError } from "../errors";
 
-interface ImageAnalyzerOptions {
+export interface ImageAnalyzerOptions {
   apiKey: string;
   proxyURL: string;
 }
 
-interface ImageAnalyzerPredictions {
+export interface ImageAnalyzerPredictions {
   teen: number;
   everyone: number;
   adult: number;
 }
 
-interface ImageAnalyzerResponse {
+export interface ImageAnalyzerResponse {
   url_classified: string;
   rating_index: number;
   rating_letter: string;
@@ -34,7 +34,7 @@ interface ImageAnalyzerResponse {
  *   proxyURL: 'https://www.exampleImage.com',
  * });
  */
-async function analyzeImage(
+export async function analyzeImage(
   options: ImageAnalyzerOptions
 ): Promise<ImageAnalyzerResponse> {
   const { apiKey, proxyURL } = options;
@@ -59,5 +59,3 @@ async function analyzeImage(
     throw new PerspectiveAnalyzerError(String(error.message));
   }
 }
-
-export { analyzeImage };

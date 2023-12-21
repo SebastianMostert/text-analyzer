@@ -1,147 +1,123 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.analyzeText = void 0;
-const googleapis_1 = require("googleapis");
-const axios_1 = require("axios");
+exports.PerspectiveClient = exports.SupportedLanguage = void 0;
 const errors_1 = require("../errors");
-const DISCOVERY_URL = "https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1";
-async function detectLanguage(text) {
-    const options = {
-        method: "POST",
-        url: "https://microsoft-text-analytics1.p.rapidapi.com/languages",
-        headers: {
-            "content-type": "application/json",
-            "X-RapidAPI-Key": "5838242b02msh0816449f0b97f40p180163jsn43e54151ddb5",
-            "X-RapidAPI-Host": "microsoft-text-analytics1.p.rapidapi.com",
-        },
-        data: {
-            documents: [
-                {
-                    id: "1",
-                    text: text,
-                },
-            ],
-        },
-    };
-    const response = await axios_1.default.request(options);
-    const errors = response.data?.errors;
-    if (errors && errors.length > 0) {
-        const error = errors[0].error;
-        throw new errors_1.LanguageNotSupportedError(`${error.code}: ${error.message}`);
+var SupportedLanguage;
+(function (SupportedLanguage) {
+    SupportedLanguage["Arabic"] = "ar";
+    SupportedLanguage["Chinese"] = "zh";
+    SupportedLanguage["Czech"] = "cs";
+    SupportedLanguage["Dutch"] = "nl";
+    SupportedLanguage["English"] = "en";
+    SupportedLanguage["French"] = "fr";
+    SupportedLanguage["German"] = "de";
+    SupportedLanguage["Hindi"] = "hi";
+    SupportedLanguage["HindiLatin"] = "hi-Latn";
+    SupportedLanguage["Indonesian"] = "id";
+    SupportedLanguage["Italian"] = "it";
+    SupportedLanguage["Japanese"] = "ja";
+    SupportedLanguage["Korean"] = "ko";
+    SupportedLanguage["Polish"] = "pl";
+    SupportedLanguage["Portuguese"] = "pt";
+    SupportedLanguage["Russian"] = "ru";
+    SupportedLanguage["Spanish"] = "es";
+    SupportedLanguage["Swedish"] = "sv";
+})(SupportedLanguage || (exports.SupportedLanguage = SupportedLanguage = {}));
+class PerspectiveClient {
+    constructor(perspectiveApiKey, rapidApiKey) {
+        this.perspectiveKey = perspectiveApiKey;
+        this.rapidApiKey = rapidApiKey || null;
+        if (!this.perspectiveKey)
+            throw new errors_1.MissingParameterError("Perspective API Key");
+        if (!this.rapidApiKey)
+            console.warn('[Perspective Client] Warning, not providing a rapid API key will prevent you from using the detect language command.');
+        this.apiUrl = `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${this.perspectiveKey}`;
     }
-    const doc = response.data.documents[0];
-    let detectedLang = doc.detectedLanguage.iso6391Name;
-    const confidence = doc.detectedLanguage.confidenceScore;
-    if (confidence < 0.51) {
-        throw new errors_1.LowConfidenceError("[TOXICITY ANALYZER WARNING] Language detection confidence score is below the threshold.");
-    }
-    return detectedLang;
-}
-async function analyzeText(analyzeOptions) {
-    const { apiKey, text, attributeThresholds, autoLanguage } = analyzeOptions;
-    const languages = analyzeOptions.languages || ["en"];
-    if (!apiKey) {
-        throw new errors_1.MissingParameterError("API Key");
-    }
-    if (!text) {
-        throw new errors_1.MissingParameterError("Text");
-    }
-    if (!attributeThresholds) {
-        throw new errors_1.MissingParameterError("Attribute Thresholds");
-    }
-    if (autoLanguage) {
-        console.warn("[TOXICITY ANALYZER WARNING] This feature is experimental!");
-    }
-    let detectedLang = null;
-    if (!autoLanguage) {
-        // If autoLanguage is false, use the first language in the list as the detected language
-        detectedLang = languages[0];
-    }
-    else {
-        try {
-            detectedLang = await detectLanguage(text);
-        }
-        catch (error) {
-            console.error("[TOXICITY ANALYZER ERROR] Language detection failed:", error);
-            console.warn("[TOXICITY ANALYZER WARNING] Defaulting to English.");
-            detectedLang = "en";
-        }
-    }
-    if (detectedLang &&
-        !languages.includes(detectedLang)) {
-        languages.push(detectedLang);
-    }
-    const availableLanguages = [
-        "ar",
-        "zh",
-        "cs",
-        "nl",
-        "en",
-        "fr",
-        "de",
-        "hi",
-        "hi-Latn",
-        "id",
-        "it",
-        "ja",
-        "ko",
-        "pl",
-        "pt",
-        "ru",
-        "es",
-        "sv",
-    ];
-    const unsupportedLanguages = languages.filter((lang) => !availableLanguages.includes(lang));
-    if (unsupportedLanguages.length > 0) {
-        throw new errors_1.LanguageNotSupportedError(unsupportedLanguages.join(", "));
-    }
-    const hasRestrictedAttributes = Object.keys(attributeThresholds).some((attribute) => [
-        "SEXUALLY_EXPLICIT",
-        "FLIRTATION",
-        "SPAM",
-        "ATTACK_ON_AUTHOR",
-        "ATTACK_ON_COMMENTER",
-        "INCOHERENT",
-        "INFLAMMATORY",
-        "OBSCENE",
-        "UNSUBSTANTIAL",
-    ].includes(attribute));
-    if (hasRestrictedAttributes && !languages.every((lang) => lang === "en")) {
-        throw new errors_1.LanguageNotSupportedForAttributesError('When using attributes such as "SEXUALLY_EXPLICIT", "FLIRTATION", "SPAM", "ATTACK_ON_AUTHOR", "ATTACK_ON_COMMENTER", "INCOHERENT", "INFLAMMATORY", "OBSCENE", or "UNSUBSTANTIAL", the language must be "en" (English).');
-    }
-    const client = googleapis_1.google.discoverAPI(DISCOVERY_URL);
-    const requestedAttributes = {};
-    for (const key in attributeThresholds) {
-        requestedAttributes[key] = {};
-    }
-    const analyzeRequest = {
-        comment: { text },
-        languages,
-        requestedAttributes,
-    };
-    try {
-        const res = await googleapis_1.google.comments.analyze({
-            key: apiKey,
-            resource: analyzeRequest,
+    async fetchAPI(url, requestBody) {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
         });
-        const data = {
-            languages: languages,
-            attributes: {},
-        };
-        for (const [key, attribute] of Object.entries(res.data.attributeScores)) {
-            const score = attribute.summaryScore?.value ?? 0;
-            const threshold = attributeThresholds[key] ?? 0;
-            const isToxic = score > threshold;
-            data.attributes[key] = {
-                score,
-                threshold,
-                isToxic,
-            };
+        const data = await response.json();
+        if (data.error) {
+            throw new Error(`[${data.error.status}] ${data.error.message}`);
         }
         return data;
     }
-    catch (error) {
-        throw new errors_1.PerspectiveAnalyzerError("[TOXICITY ANALYZER ERROR] An error occurred while analyzing the text.");
+    createRequestBody(options) {
+        const { comment, language } = options;
+        return {
+            comment: { text: comment },
+            requestedAttributes: {
+                TOXICITY: {},
+                SEVERE_TOXICITY: {},
+                IDENTITY_ATTACK: {},
+                INSULT: {},
+                PROFANITY: {},
+                THREAT: {},
+            },
+            languages: [language]
+        };
+    }
+    async analyzeComment(options) {
+        const { comment, language, autoLanguage } = options;
+        if (!comment)
+            throw new errors_1.MissingParameterError('Comment');
+        if (!language)
+            throw new errors_1.MissingParameterError('Language');
+        let lang = language;
+        // TODO: We need to allow the user to specify what attributes to receive
+        // We need to validate if the attributes support the language
+        // if (autoLanguage) lang = (await this.detectLanguage(comment)).name
+        if (autoLanguage)
+            console.log('[Auto Language] This is still being developed, keep a look out for the next beta version');
+        const requestBody = this.createRequestBody({ autoLanguage, comment, language: lang, });
+        const data = await this.fetchAPI(this.apiUrl, requestBody);
+        return data;
+    }
+    async detectLanguage(comment) {
+        if (!this.rapidApiKey)
+            throw new errors_1.MissingParameterError("Rapid API Key");
+        const url = "https://microsoft-text-analytics1.p.rapidapi.com/languages";
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key": this.rapidApiKey,
+                "X-RapidAPI-Host": "microsoft-text-analytics1.p.rapidapi.com",
+            },
+            body: JSON.stringify({
+                documents: [
+                    {
+                        id: "1",
+                        text: comment,
+                    },
+                ],
+            }),
+        };
+        const response = await fetch(url, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        const errors = responseData.errors;
+        if (errors && errors.length > 0) {
+            const error = errors[0].error;
+            throw new errors_1.LanguageNotSupportedError(`${error.code}: ${error.message}`);
+        }
+        const doc = responseData.documents[0];
+        let iso6391Name = doc.detectedLanguage.iso6391Name;
+        const confidenceScore = doc.detectedLanguage.confidenceScore;
+        const name = doc.detectedLanguage.name;
+        if (confidenceScore < 0.51) {
+            throw new errors_1.LowConfidenceError("[TOXICITY ANALYZER WARNING] Language detection confidence score is below the threshold.");
+        }
+        return {
+            name,
+            iso6391Name,
+            confidenceScore
+        };
     }
 }
-exports.analyzeText = analyzeText;
+exports.PerspectiveClient = PerspectiveClient;

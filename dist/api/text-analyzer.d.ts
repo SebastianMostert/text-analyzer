@@ -1,36 +1,76 @@
-interface PerspectiveResponse {
+export interface AnalyzeCommentRequestBody {
+    comment: {
+        text: string;
+    };
+    requestedAttributes: {
+        [attribute: string]: {};
+    };
     languages: string[];
-    attributes: {
-        [key: string]: {
-            score: number;
-            threshold: number;
-            isToxic: boolean;
-        };
+}
+export interface SpanScore {
+    begin: number;
+    end: number;
+    score: {
+        value: number;
+        type: string;
     };
 }
-interface PerspectiveAttributeThresholds {
-    TOXICITY?: number;
-    SEVERE_TOXICITY?: number;
-    IDENTITY_ATTACK?: number;
-    INSULT?: number;
-    PROFANITY?: number;
-    THREAT?: number;
-    SEXUALLY_EXPLICIT?: number;
-    FLIRTATION?: number;
-    SPAM?: number;
-    ATTACK_ON_AUTHOR?: number;
-    ATTACK_ON_COMMENTER?: number;
-    INCOHERENT?: number;
-    INFLAMMATORY?: number;
-    OBSCENE?: number;
-    UNSUBSTANTIAL?: number;
+export interface AttributeScore {
+    spanScores: SpanScore[];
+    summaryScore: {
+        value: number;
+        type: string;
+    };
 }
-interface PerspectiveOptions {
-    apiKey: string;
-    text: string;
-    attributeThresholds: PerspectiveAttributeThresholds;
+export interface AnalyzeCommentResponse {
+    attributeScores: {
+        TOXICITY?: AttributeScore;
+        IDENTITY_ATTACK?: AttributeScore;
+        PROFANITY?: AttributeScore;
+        INSULT?: AttributeScore;
+        SEVERE_TOXICITY?: AttributeScore;
+        THREAT?: AttributeScore;
+    };
+    languages: string[];
+    detectedLanguages: string[];
+}
+export declare enum SupportedLanguage {
+    Arabic = "ar",
+    Chinese = "zh",
+    Czech = "cs",
+    Dutch = "nl",
+    English = "en",
+    French = "fr",
+    German = "de",
+    Hindi = "hi",
+    HindiLatin = "hi-Latn",
+    Indonesian = "id",
+    Italian = "it",
+    Japanese = "ja",
+    Korean = "ko",
+    Polish = "pl",
+    Portuguese = "pt",
+    Russian = "ru",
+    Spanish = "es",
+    Swedish = "sv"
+}
+export interface DetectLanguageResponse {
+    name: string;
+    iso6391Name: string;
+    confidenceScore: number;
+}
+export interface AnalyzeCommentOptions {
+    comment: string;
+    language: SupportedLanguage | string;
     autoLanguage?: boolean;
-    languages?: ("ar" | "zh" | "cs" | "nl" | "en" | "fr" | "de" | "hi" | "hi-Latn" | "id" | "it" | "ja" | "ko" | "pl" | "pt" | "ru" | "es" | "sv")[];
 }
-declare function analyzeText(analyzeOptions: PerspectiveOptions): Promise<PerspectiveResponse>;
-export { analyzeText };
+export declare class PerspectiveClient {
+    private readonly perspectiveKey;
+    private readonly rapidApiKey;
+    private readonly apiUrl;
+    constructor(perspectiveApiKey: string, rapidApiKey?: string | null);
+    private fetchAPI;
+    private createRequestBody;
+    analyzeComment(options: AnalyzeCommentOptions): Promise<AnalyzeCommentResponse>;
+    detectLanguage(comment: string): Promise<DetectLanguageResponse>;
+}

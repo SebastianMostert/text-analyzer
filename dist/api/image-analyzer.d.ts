@@ -1,13 +1,13 @@
-interface ImageAnalyzerOptions {
+export interface ImageAnalyzerOptions {
     apiKey: string;
     proxyURL: string;
 }
-interface ImageAnalyzerPredictions {
+export interface ImageAnalyzerPredictions {
     teen: number;
     everyone: number;
     adult: number;
 }
-interface ImageAnalyzerResponse {
+export interface ImageAnalyzerResponse {
     url_classified: string;
     rating_index: number;
     rating_letter: string;
@@ -28,5 +28,4 @@ interface ImageAnalyzerResponse {
  *   proxyURL: 'https://www.exampleImage.com',
  * });
  */
-declare function analyzeImage(options: ImageAnalyzerOptions): Promise<ImageAnalyzerResponse>;
-export { analyzeImage };
+export declare function analyzeImage(options: ImageAnalyzerOptions): Promise<ImageAnalyzerResponse>;

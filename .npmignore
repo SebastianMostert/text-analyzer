@@ -1,0 +1,7 @@
+# Files and directories to be ignored
+*.ts
+*.tsx
+*.map
+src/
+test/
+docs/
